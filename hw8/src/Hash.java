@@ -130,20 +130,25 @@ public class Hash {
         return bits;
     }
 
-
     /**
-     * main driver
-     *
-     * @param args  arg[0]: word to hash
-     * @throws IOException unable to write to byte stream
+     * Convert a list of ints to binary string
+     * @return list of bits
      */
-    public static void main(String[] args) throws IOException {
-        loadConstants();
+    public static String bitsToString(List<Integer> bits){
 
-        System.out.println("Your Message: " + args[0]);
+        // convert to bit array
+        StringBuilder str = new StringBuilder();
+        for(int bit : bits)
+            str.append(bit == 1 ? '1' : '0');
+
+        return str.toString();
+    }
+
+    public static String hash(String in) throws IOException {
+        loadConstants();
         ByteArrayOutputStream msgStream = new ByteArrayOutputStream();
 
-        msgStream.write(args[0].getBytes());
+        msgStream.write(in.getBytes());
 
 
         // pad with 0s until correct size
@@ -169,13 +174,22 @@ public class Hash {
 
             // XOR result of F and current out
             out = XOR(F(out, block), out);
-
         }
 
-        // print result
-        System.out.print("Hashed: ");
-        for(int bit : out)
-            System.out.print(bit);
+        return bitsToString(out);
+    }
+    /**
+     * main driver
+     *
+     * @param args  arg[0]: word to hash
+     * @throws IOException unable to write to byte stream
+     */
+    public static void main(String[] args) throws IOException {
 
+
+        System.out.println("Your Message: " + args[0]);
+
+        // print result
+        System.out.print("Hashed: " + hash(args[0]));
     }
 }

@@ -132,6 +132,7 @@ public class Hash {
 
     /**
      * Convert a list of ints to binary string
+     * @param bits bits to convert into string
      * @return list of bits
      */
     public static String bitsToString(List<Integer> bits){
@@ -144,12 +145,17 @@ public class Hash {
         return str.toString();
     }
 
+    /**
+     * Perform hashing algorithm
+     * @param in input msg
+     * @return String of hashed bits
+     * @throws IOException unable to write to stream
+     */
     public static String hash(String in) throws IOException {
         loadConstants();
         ByteArrayOutputStream msgStream = new ByteArrayOutputStream();
 
         msgStream.write(in.getBytes());
-
 
         // pad with 0s until correct size
         while(msgStream.size() % M_BLOCK_SIZE != 0)
@@ -185,10 +191,7 @@ public class Hash {
      * @throws IOException unable to write to byte stream
      */
     public static void main(String[] args) throws IOException {
-
-
         System.out.println("Your Message: " + args[0]);
-
         // print result
         System.out.print("Hashed: " + hash(args[0]));
     }
